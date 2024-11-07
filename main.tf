@@ -1,4 +1,4 @@
-# Step 1: Retrieve existing users using user_principal_names
+# Step 1: Retrieve existing users using azuread_users data source
 data "azuread_users" "existing_users" {
   user_principal_names = var.emails
 }
@@ -8,6 +8,7 @@ locals {
   existing_users = {
     for idx, upn in data.azuread_users.existing_users.user_principal_names :
     upn => data.azuread_users.existing_users.object_ids[idx]
+    if data.azuread_users.existing_users.object_ids[idx] != ""
   }
 
   missing_emails = [

@@ -11,7 +11,7 @@ variable "group_display_name" {
 variable "redirect_url" {
   description = "The URL to redirect users to after they accept the invitation."
   type        = string
-  default     = "https://myapplications.microsoft.com/"
+  default     = "https://portal.azure.com/"
 }
 
 variable "managed_identity_client_id" {
