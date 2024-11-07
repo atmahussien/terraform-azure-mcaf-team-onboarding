@@ -8,11 +8,14 @@ variable "group_display_name" {
   type        = string
 }
 
-variable "invitations" {
-  description = "Map of invitations to create."
-  type = map(object({
-    redirect_url       = string   # The URL to which the user will be redirected after accepting the invitation
-    user_email_address = string   # The email address of the user to invite
-    # Include any other required or optional attributes
-  }))
+variable "redirect_url" {
+  description = "The URL to redirect users to after they accept the invitation."
+  type        = string
+  default     = "https://myapplications.microsoft.com/"
+}
+
+variable "managed_identity_client_id" {
+  description = "The client ID of the user-assigned managed identity to use for authentication."
+  type        = string
+  default     = null
 }
