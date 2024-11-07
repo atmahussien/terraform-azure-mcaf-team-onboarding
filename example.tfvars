@@ -1,10 +1,10 @@
-invitations = {
-  invite1 = {
-    redirect_url       = "https://portal.azure.com"
-    user_email_address = "user1@example.com"
-  }
-  invite2 = {
-    redirect_url       = "https://your-app.com/welcome2"
-    user_email_address = "user2@example.com"
-  }
-}
+# example.tfvars
+
+emails = [
+  "existing_user@example.com",
+  "new_user@example.com"
+]
+
+group_display_name = "Engineering Team"
+
+redirect_url = "https://myapplications.microsoft.com/"
