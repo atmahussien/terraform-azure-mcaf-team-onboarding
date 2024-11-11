@@ -2,35 +2,50 @@
 
 ## Overview
 
-Streamline your user onboarding process in Azure Active Directory (Entra ID) with this Terraform module. It automates key tasks to efficiently manage user access:
+The **Azure AD User Onboarding** Terraform module automates the process of managing user access within Azure Active Directory (Azure AD). It streamlines onboarding by:
 
-- **Consolidated Email Ingestion**: Accepts a unified list of user email addresses.
-- **User Verification**: Checks for existing users within your Azure AD tenant.
-- **Automated Invitations**: Sends B2B invitations to external users not found in your tenant.
-- **Security Group Provisioning**: Creates an Azure AD security group tailored to your needs.
-- **Unified Group Enrollment**: Adds all users—both existing and newly invited—to the security group seamlessly.
+- **Consolidating Email Inputs**: Accepts a list of user email addresses for onboarding.
+- **User Verification**: Checks if users already exist in your Azure AD tenant.
+- **Automated Invitations**: Sends invitations to external users who are not part of the tenant.
+- **Security Group Management**: Creates a dedicated Azure AD security group.
+- **Group Membership Assignment**: Adds both existing and newly invited users to the security group.
 
-## Getting Started
+## Features
 
-Implement the module by adding the following to your Terraform configuration. This example demonstrates how to consume the module from a public GitHub repository.
+- **Efficient User Management**: Differentiates between existing and new users, ensuring seamless onboarding.
+- **Customizable Invitations**: Personalize invitation messages and specify additional recipients.
+- **Security Group Provisioning**: Automatically creates and manages Azure AD security groups.
+- **Scalable Design**: Suitable for organizations of all sizes, facilitating bulk user management.
 
-### **Example `main.tf`**
+## Requirements
 
-```hcl
-provider "azuread" {
-  # Authenticate using Azure CLI or Managed Identity
-  # If using Managed Identity, provide the client ID
-  use_msi   = var.managed_identity_client_id != null
-  client_id = var.managed_identity_client_id
-}
+- **Terraform**: Version 1.0 or later.
+- **Providers**:
+  - [`azuread`](https://registry.terraform.io/providers/hashicorp/azuread/latest) version `>= 2.22.0`.
 
-module "user_onboarding" {
-  source = "github.com/yourusername/azure-ad-user-onboarding//modules/user_onboarding"
+## Module Inputs
 
-  emails             = var.emails
-  group_display_name = var.group_display_name
-  redirect_url       = var.redirect_url
+| Variable Name               | Description                                                  | Type           | Default                                  | Required |
+|-----------------------------|--------------------------------------------------------------|----------------|------------------------------------------|----------|
+| `emails`                    | List of user email addresses for onboarding.                | `list(string)` | N/A                                      | Yes      |
+| `group_display_name`        | Display name for the Azure AD security group.               | `string`       | N/A                                      | Yes      |
+| `redirect_url`              | URL to redirect users after accepting the invitation.        | `string`       | `"https://myapplications.microsoft.com/"` | No       |
+| `invitation_body`           | Body of the invitation email.                                | `string`       | `"Hello! You are invited to join our Azure AD tenant. Please accept the invitation to gain access."` | No       |
+| `additional_recipients`     | Additional email addresses to include in the invitation.     | `list(string)` | `[]`                                     | No       |
+| `managed_identity_client_id`| Client ID of the managed identity for authentication (optional). | `string`     | `null`                                   | No       |
 
-  # Optional: Use if authenticating with a managed identity
-  managed_identity_client_id = var.managed_identity_client_id
-}
+## Module Outputs
+
+| Output Name    | Description                                           |
+|----------------|-------------------------------------------------------|
+| `group_id`     | The ID of the created Azure AD security group.        |
+| `group_name`   | The display name of the created security group.       |
+| `invited_users`| List of email addresses that were sent invitations.    |
+| `existing_users`| Map of existing user emails to their Azure AD object IDs.|
+
+## Usage Example
+
+Here's how you can consume the **Azure AD User Onboarding** module in your Terraform configuration.
+
+### **Directory Structure**
+
