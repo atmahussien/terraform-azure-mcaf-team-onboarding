@@ -1,3 +1,5 @@
+# consumer/terraform.tfvars
+
 emails = [
   "existing_user@example.com",
   "new_user@example.com",
@@ -15,5 +17,4 @@ additional_recipients = [
 ]
 
 # Optional: Uncomment and set if using a managed identity
-# managed_identity_client_id = "your-managed-identity-client-id"
 # managed_identity_client_id = "your-managed-identity-client-id"

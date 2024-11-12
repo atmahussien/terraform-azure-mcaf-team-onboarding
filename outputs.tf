@@ -15,5 +15,5 @@ output "invited_users" {
 
 output "invited_user_ids" {
   description = "Map of invited user emails to their Azure AD object IDs."
-  value       = { for email, invite in azuread_invitation.invitations : email => invite.invited_user_id }
+  value       = { for email, invite in azuread_invitation.invitations : email => invite.user_id }
 }

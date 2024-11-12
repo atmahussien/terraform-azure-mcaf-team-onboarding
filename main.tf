@@ -1,5 +1,3 @@
-# modules/aad_user_onboard/main.tf
-
 # Provider Configuration
 provider "azuread" {
   use_msi   = var.managed_identity_client_id != null
@@ -9,10 +7,10 @@ provider "azuread" {
 # Step 1: Send invitations to all users
 resource "azuread_invitation" "invitations" {
   for_each = toset(var.emails)
-  
-  user_email_address  = each.value
-  redirect_url        = var.redirect_url
-  
+
+  user_email_address = each.value
+  redirect_url       = var.redirect_url
+
   message {
     body                  = var.invitation_body
     additional_recipients = var.additional_recipients
@@ -29,7 +27,7 @@ resource "azuread_group" "security_group" {
 # Step 3: Add invited users to the group
 resource "azuread_group_member" "invited_members" {
   for_each = azuread_invitation.invitations
-  
+
   group_object_id  = azuread_group.security_group.id
-  member_object_id = each.value.invited_user_id
+  member_object_id = each.value.user_id
 }
